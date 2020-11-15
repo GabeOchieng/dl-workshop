@@ -1,0 +1,1573 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.5">
+    
+    
+      
+        <title>Logistic Regression - Differential Progamming Tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.21aed14c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.196e0c26.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/mermaid@7.1.2/dist/mermaid.css">
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="green">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#logistic-regression" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-header-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Differential Progamming Tutorial
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Logistic Regression
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Differential Progamming Tutorial
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+    <label class="md-nav__link" for="nav-2">
+      Preliminaries
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Preliminaries" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Preliminaries
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/01-preface/" class="md-nav__link">
+      Preface
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/02-prerequisites/" class="md-nav__link">
+      Prerequisites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/03-setup/" class="md-nav__link">
+      Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    <label class="md-nav__link" for="nav-3">
+      Introduction to Differential Programming
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Introduction to Differential Programming" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Introduction to Differential Programming
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-neural-nets-from-scratch/" class="md-nav__link">
+      Neural Networks from Scratch
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-gradient-optimization/" class="md-nav__link">
+      Gradient Based Optimization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-linear-model-optimization/" class="md-nav__link">
+      Linear Model
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Logistic Regression
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Logistic Regression
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#matrix-form" class="md-nav__link">
+    Matrix Form
+  </a>
+  
+    <nav class="md-nav" aria-label="Matrix Form">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#neural-diagram" class="md-nav__link">
+    Neural Diagram
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-activity" class="md-nav__link">
+    Interactive Activity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-of-the-model" class="md-nav__link">
+    Parameters of the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make-simulated-data" class="md-nav__link">
+    Make simulated data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-classification-loss-function" class="md-nav__link">
+    Binary Classification Loss Function
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Classification Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-down-the-logistic-regression-model" class="md-nav__link">
+    Exercise: Write down the logistic regression model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-down-the-logistic-loss-function" class="md-nav__link">
+    Exercise: Write down the logistic loss function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-initialize-logistic-regression-model-parameters-using-random-numbers" class="md-nav__link">
+    Exercise: Initialize logistic regression model parameters using random numbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-the-training-loop" class="md-nav__link">
+    Exercise: Write the training loop!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    Exercise
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-neural-networks/" class="md-nav__link">
+      Neural Networks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    <label class="md-nav__link" for="nav-4">
+      JAX Programming Idioms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="JAX Programming Idioms" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        JAX Programming Idioms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/00-introduction/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/01-vmap/" class="md-nav__link">
+      Mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/02-partials/" class="md-nav__link">
+      Partials and closures
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/03-lax-scan/" class="md-nav__link">
+      Scanning
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/04-random-numbers/" class="md-nav__link">
+      Random Numbers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/05-composition-example/" class="md-nav__link">
+      Compositionality
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" >
+    <label class="md-nav__link" for="nav-5">
+      The stax Module
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="The stax Module" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        The stax Module
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/01-linear/" class="md-nav__link">
+      Linear Models with stax
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/02-neural/" class="md-nav__link">
+      Neural Networks with stax
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" >
+    <label class="md-nav__link" for="nav-6">
+      Gaussian Clustering
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Gaussian Clustering" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Gaussian Clustering
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/01-intro-gaussian-clustering/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/02-dirichlet-processes/" class="md-nav__link">
+      Dirichlet Processes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/03-dirichlet-process-clustering/" class="md-nav__link">
+      DP-GMM
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#matrix-form" class="md-nav__link">
+    Matrix Form
+  </a>
+  
+    <nav class="md-nav" aria-label="Matrix Form">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#neural-diagram" class="md-nav__link">
+    Neural Diagram
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-activity" class="md-nav__link">
+    Interactive Activity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-of-the-model" class="md-nav__link">
+    Parameters of the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make-simulated-data" class="md-nav__link">
+    Make simulated data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-classification-loss-function" class="md-nav__link">
+    Binary Classification Loss Function
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Classification Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-down-the-logistic-regression-model" class="md-nav__link">
+    Exercise: Write down the logistic regression model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-down-the-logistic-loss-function" class="md-nav__link">
+    Exercise: Write down the logistic loss function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-initialize-logistic-regression-model-parameters-using-random-numbers" class="md-nav__link">
+    Exercise: Initialize logistic regression model parameters using random numbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-write-the-training-loop" class="md-nav__link">
+    Exercise: Write the training loop!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    Exercise
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ericmjl/dl-workshop/edit/master/docs/01-differential-programming/04-logistic-regression.ipynb" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var scriptElement = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://mybinder.org/v2/gh/ericmjl/dl-workshop/master?filepath=notebooks%2F01-differential-programming%2F04-logistic-regression.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="o">.</span><span class="n">figure_format</span> <span class="o">=</span> <span class="s1">&#39;retina&#39;</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="logistic-regression">Logistic Regression</h1>
+<p>Logistic regression builds upon linear regression.
+We use logistic regression to perform <strong>binary classification</strong>, 
+that is, distinguishing between two classes. 
+Typically, we label one of the classes with the integer 0, 
+and the other class with the integer 1.</p>
+<p>What does the model look like?
+To help you build intuition, let's visualize logistic regression using pictures again.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="matrix-form">Matrix Form</h2>
+<p>Here is logistic regression in matrix form.</p>
+<p><img alt="" src="../figures/logreg-matrices.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="neural-diagram">Neural Diagram</h3>
+<p>Now, here's logistic regression in a neural diagram:</p>
+<p><img alt="" src="../figures/logreg-neural.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="interactive-activity">Interactive Activity</h3>
+<p>As should be evident from the pictures, 
+logistic regression builds upon linear regression 
+simply by <strong>changing the activation function 
+from an "identity" function to a "logistic" function</strong>. 
+In the one-dimensional case, 
+it has the same two parameters as one-dimensional linear regression,  <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>. 
+Let's use an interactive visualization 
+to visualize how the parameters <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> affect the shape of the curve.</p>
+<p>(Note: this exercise is best done in a live notebook!)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">logistic</span>
+<span class="n">logistic</span><span class="err">??</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>/home/travis/build/ericmjl/dl-workshop/src/dl_workshop/answers.py:34: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">FloatSlider</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">plot_logistic</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># linear transform on x</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div id="755886b1-df05-4bc0-859b-0fd63c932d69"></div>
+<div class="output_subarea output_widget_view ">
+<script type="text/javascript">
+var element = $('#755886b1-df05-4bc0-859b-0fd63c932d69');
+</script>
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "7fd796252f234c20bca72e20ab7d1636"}
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="parameters-of-the-model">Parameters of the model</h2>
+<p>As we can see, there are two parameters <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>.
+For those who may be encountering the model for the first time,
+this is what each of them control:</p>
+<ul>
+<li><span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> controls how steep the step function is between 0 and 1 on the y-axis. Its sign also controls whether class 1 is associated with smaller values or larger values.</li>
+<li><span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> controls the midpoint location of the curve. More negative values of <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> shift it to the left; more positive values of <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> shift it to the right.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="make-simulated-data">Make simulated data</h2>
+<p>Once again, we are going to use simulated data to help us anchor our understanding.
+Along the way, we will see how logistic regression, once again, fits inside the same framework
+of "model, loss, optimizer".</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">npr</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">npr</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>&lt;matplotlib.collections.PathCollection at 0x7f35c05c8590&gt;</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_10_1.png"
+width=372
+height=248
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, we set <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> to 2 and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> to 1, added some noise in there too, and rounded off the logistic-transformed values to between 0 and 1.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="binary-classification-loss-function">Binary Classification Loss Function</h2>
+<p>How would we quantify how good or bad our model is?
+In this case, we use the <em>logistic</em> loss function, also known as the <em>binary cross entropy</em> loss function.</p>
+<p>Expressed in equation form, it looks like this:</p>
+<div>
+<div class="MathJax_Preview">L = -\sum (y \log(p) + (1-y)\log(1-p)</div>
+<script type="math/tex; mode=display">L = -\sum (y \log(p) + (1-y)\log(1-p)</script>
+</div>
+<p>Here:</p>
+<ul>
+<li><span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> is the actual class, namely <span><span class="MathJax_Preview">1</span><script type="math/tex">1</script></span> or <span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>.</li>
+<li><span><span class="MathJax_Preview">p</span><script type="math/tex">p</script></span> is the predicted class.</li>
+</ul>
+<p>If you're staring at this equation, and thinking that it looks a lot like the Bernoulli distribution log likelihood, you are right!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="discussion">Discussion</h3>
+<p>Let's think about the loss function for a moment:</p>
+<ul>
+<li>What happens to the term <span><span class="MathJax_Preview">y \log(p)</span><script type="math/tex">y \log(p)</script></span> when <span><span class="MathJax_Preview">y=0</span><script type="math/tex">y=0</script></span> and <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span>? What about the <span><span class="MathJax_Preview">(1-y)\log(1-p)</span><script type="math/tex">(1-y)\log(1-p)</script></span> term?</li>
+<li>What happens to both terms when <span><span class="MathJax_Preview">p \approx 0</span><script type="math/tex">p \approx 0</script></span> and when <span><span class="MathJax_Preview">p \approx 1</span><script type="math/tex">p \approx 1</script></span> (but still bounded between 0 and 1)?</li>
+</ul>
+<p>The answers are as follows:</p>
+<ul>
+<li>When <span><span class="MathJax_Preview">y=0</span><script type="math/tex">y=0</script></span>, $y \log(p) = $, and when <span><span class="MathJax_Preview">y=1</span><script type="math/tex">y=1</script></span>, <span><span class="MathJax_Preview">(1-y)\log(1-p) = 0</span><script type="math/tex">(1-y)\log(1-p) = 0</script></span>.</li>
+<li>When <span><span class="MathJax_Preview">p \rightarrow 0</span><script type="math/tex">p \rightarrow 0</script></span>, then <span><span class="MathJax_Preview">\log(p)</span><script type="math/tex">\log(p)</script></span> approaches negative infinity. Likewise for <span><span class="MathJax_Preview">\log(1-p)</span><script type="math/tex">\log(1-p)</script></span> when <span><span class="MathJax_Preview">p \rightarrow 1</span><script type="math/tex">p \rightarrow 1</script></span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-write-down-the-logistic-regression-model">Exercise: Write down the logistic regression model</h3>
+<p>Using the same patterns as you did before for the linear model,
+define a function called <code>logistic_model</code>,
+which accepts parameters <code>theta</code> and data <code>x</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Exercise: Define logistic model</span>
+<span class="k">def</span> <span class="nf">logistic_model</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">logistic_model</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-write-down-the-logistic-loss-function">Exercise: Write down the logistic loss function</h3>
+<p>Now, write down the logistic loss function.
+It is defined as the negative binary cross entropy
+between the ground truth and the predicted.</p>
+<p>The binary cross entropy function is available for you to use:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">binary_cross_entropy</span>
+
+<span class="n">binary_cross_entropy</span><span class="err">??</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Exercise: Define logistic loss function</span>
+<span class="k">def</span> <span class="nf">logistic_loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">logistic_loss</span>
+<span class="n">logistic_loss</span><span class="err">??</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now define the gradient of the loss function, using <code>grad</code>!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span>
+<span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">dlogistic_loss</span>
+
+<span class="c1"># Exercise: Define gradient of loss function.</span>
+<span class="c1"># dlogistic_loss = ...</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-initialize-logistic-regression-model-parameters-using-random-numbers">Exercise: Initialize logistic regression model parameters using random numbers</h3>
+<p>Because the parameters are identical to linear regression,
+you probably can use the same <code>initialize_linear_params</code> function.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">initialize_linear_params</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">initialize_linear_params</span><span class="p">()</span>
+<span class="n">theta</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>{&#39;w&#39;: -1.0499536814354014, &#39;b&#39;: 0.847987866837381}</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-write-the-training-loop">Exercise: Write the training loop!</h3>
+<p>This will look very similar to the linear model training loop,
+because the same two parameters are being optimized.
+The thing that should change is the loss function and gradient of the loss function.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">model_optimization_loop</span>
+
+<span class="n">losses</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">model_optimization_loop</span><span class="p">(</span>
+    <span class="n">theta</span><span class="p">,</span>
+    <span class="n">logistic_model</span><span class="p">,</span>
+    <span class="n">logistic_loss</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y_true</span><span class="p">,</span>
+    <span class="n">n_steps</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">step_size</span><span class="o">=</span><span class="mf">0.0001</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div id="087b92b1-11da-4e62-9b1f-c1d12108a1f7"></div>
+<div class="output_subarea output_widget_view ">
+<script type="text/javascript">
+var element = $('#087b92b1-11da-4e62-9b1f-c1d12108a1f7');
+</script>
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "d3545474259940c1996a68a6cccc6cef"}
+</script>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>{&#39;w&#39;: DeviceArray(2.513813, dtype=float32), &#39;b&#39;: DeviceArray(1.6595516, dtype=float32)}
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You'll notice that the values are off from the true value. Why is this so? Partly it's because of the noise that we added, and we also rounded off values.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's also print out the losses to check that "learning" has happened.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>[&lt;matplotlib.lines.Line2D at 0x7f35c0690ed0&gt;]</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_28_1.png"
+width=375
+height=248
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We might argue that the model hasn't yet converged,
+so we haven't yet figured out the parameters that best explain the data,
+given the model.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And finally, checking the model against the actual values:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">logistic_model</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>[&lt;matplotlib.lines.Line2D at 0x7f35c0399650&gt;]</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_31_1.png"
+width=372
+height=248
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Indeed, we might say that the model parameters <em>could</em> have been optimized further,
+but as it stands, I'd say we did a pretty good job.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise">Exercise</h3>
+<p>What if we did not round off the values, and did not add noise to the original data? Try re-running the model without those two.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="summary">Summary</h2>
+<p>Let's recap what we learned here.</p>
+<ol>
+<li>We saw that logistic regression is nothing more than a natural extension of linear regression.</li>
+<li>We saw the introduction of the logistic loss function, and some of its properties.</li>
+<li>We finally saw that we could optimize a model, leveraging the same <code>grad</code> function from JAX.</li>
+</ol>
+<p>To reinforce point 1, let's look at logistic regression in matrix form again.</p>
+<p><img alt="" src="../figures/logreg-matrices.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>See how there is an extra function <span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span> (in yellow), which is the logistic function, that is tacked on.</p>
+<p>To further reinforce the ideas, we should look at the neural diagram once more.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="" src="../figures/logreg-neural.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once again, it's linear model + one more function.</p>
+<p>Remember this pattern: it will make neural networks much clearer in the next section!</p>
+</div>
+</div>
+</div>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"85b80a2bb3a84945a41ef81db05f87fe": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d36f491934e44616a25c528da6d82f66": {"model_name": "SliderStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "e08a44053b27497c8c9d7c718fc68d3d": {"model_name": "FloatSliderModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "FloatSliderView", "continuous_update": true, "description": "w", "description_tooltip": null, "disabled": false, "layout": "IPY_MODEL_85b80a2bb3a84945a41ef81db05f87fe", "max": 5.0, "min": -5.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_d36f491934e44616a25c528da6d82f66", "value": 0.0}}, "6e8043c021c6489d880842d0fab8b9b2": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "faee8720080e45bcad42b204e80f40f9": {"model_name": "SliderStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "e1f9337d69754a3f95ad98ff9744c651": {"model_name": "FloatSliderModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "FloatSliderView", "continuous_update": true, "description": "b", "description_tooltip": null, "disabled": false, "layout": "IPY_MODEL_6e8043c021c6489d880842d0fab8b9b2", "max": 5.0, "min": -5.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_faee8720080e45bcad42b204e80f40f9", "value": 0.0}}, "89e76504e74849489783e6af5c3f6eab": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "7fd796252f234c20bca72e20ab7d1636": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_e08a44053b27497c8c9d7c718fc68d3d", "IPY_MODEL_e1f9337d69754a3f95ad98ff9744c651", "IPY_MODEL_43ee0829040b45bdb113b4af0774a411"], "layout": "IPY_MODEL_89e76504e74849489783e6af5c3f6eab"}}, "0724c19a75b44a6898e7f141584524f5": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "43ee0829040b45bdb113b4af0774a411": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0724c19a75b44a6898e7f141584524f5", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {"image/png": {"width": 378, "height": 248}, "needs_background": "light"}, "data": {"text/plain": "<Figure size 432x288 with 1 Axes>", "image/png": "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\n"}}]}}, "6517c7c9abb84b28bf9feb5eb352eaa4": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ffd6ec3430f24af292d4253452622fd2": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "cd86198e6bc045a887fda15d3f835742": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_6517c7c9abb84b28bf9feb5eb352eaa4", "max": 5000.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_ffd6ec3430f24af292d4253452622fd2", "value": 5000.0}}, "0fecbc1bda474013be3225b8176135b3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "8956e18f717d40319c60c71600bf4ceb": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "deee57f6e7a9458f9aa4b8314f3a398d": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_0fecbc1bda474013be3225b8176135b3", "placeholder": "\u200b", "style": "IPY_MODEL_8956e18f717d40319c60c71600bf4ceb", "value": "100%"}}, "3e6e2d706e504e339dedfccd6e78d4ef": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9f141e1dc3184925ae2fe65451937450": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "205f2b105956436c980ca06b9d2e65ad": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_3e6e2d706e504e339dedfccd6e78d4ef", "placeholder": "\u200b", "style": "IPY_MODEL_9f141e1dc3184925ae2fe65451937450", "value": " 5000/5000 [00:59&lt;00:00, 84.04it/s]"}}, "e1fc1c0a6e3f42fbaa31f892bce76786": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d3545474259940c1996a68a6cccc6cef": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_deee57f6e7a9458f9aa4b8314f3a398d", "IPY_MODEL_cd86198e6bc045a887fda15d3f835742", "IPY_MODEL_205f2b105956436c980ca06b9d2e65ad"], "layout": "IPY_MODEL_e1fc1c0a6e3f42fbaa31f892bce76786"}}}, "version_major": 2, "version_minor": 0}
+</script>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../03-linear-model-optimization/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Linear Model
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../05-neural-networks/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Neural Networks
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="http://www.shortwhale.com/ericmjl" target="_blank" rel="noopener" title="www.shortwhale.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/ericmjl" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/ericmjl" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/ericmjl" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: ['tabs'],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+        <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

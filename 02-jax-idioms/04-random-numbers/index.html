@@ -1,0 +1,1548 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.5">
+    
+    
+      
+        <title>Random Numbers - Differential Progamming Tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.21aed14c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.196e0c26.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/mermaid@7.1.2/dist/mermaid.css">
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="green">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fully-controllable-random-number-generation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-header-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Differential Progamming Tutorial
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Random Numbers
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Differential Progamming Tutorial
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+    <label class="md-nav__link" for="nav-2">
+      Preliminaries
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Preliminaries" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Preliminaries
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/01-preface/" class="md-nav__link">
+      Preface
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/02-prerequisites/" class="md-nav__link">
+      Prerequisites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/03-setup/" class="md-nav__link">
+      Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+    <label class="md-nav__link" for="nav-3">
+      Introduction to Differential Programming
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Introduction to Differential Programming" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Introduction to Differential Programming
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01-differential-programming/01-neural-nets-from-scratch/" class="md-nav__link">
+      Neural Networks from Scratch
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01-differential-programming/02-gradient-optimization/" class="md-nav__link">
+      Gradient Based Optimization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01-differential-programming/03-linear-model-optimization/" class="md-nav__link">
+      Linear Model
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01-differential-programming/04-logistic-regression/" class="md-nav__link">
+      Logistic Regression
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01-differential-programming/05-neural-networks/" class="md-nav__link">
+      Neural Networks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    <label class="md-nav__link" for="nav-4">
+      JAX Programming Idioms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="JAX Programming Idioms" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        JAX Programming Idioms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../00-introduction/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-vmap/" class="md-nav__link">
+      Mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-partials/" class="md-nav__link">
+      Partials and closures
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-lax-scan/" class="md-nav__link">
+      Scanning
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Random Numbers
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Random Numbers
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-simulating-a-gaussian-random-walk" class="md-nav__link">
+    Example: Simulating a Gaussian random walk
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-composition-example/" class="md-nav__link">
+      Compositionality
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" >
+    <label class="md-nav__link" for="nav-5">
+      The stax Module
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="The stax Module" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        The stax Module
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/01-linear/" class="md-nav__link">
+      Linear Models with stax
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/02-neural/" class="md-nav__link">
+      Neural Networks with stax
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" >
+    <label class="md-nav__link" for="nav-6">
+      Gaussian Clustering
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Gaussian Clustering" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Gaussian Clustering
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/01-intro-gaussian-clustering/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/02-dirichlet-processes/" class="md-nav__link">
+      Dirichlet Processes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/03-dirichlet-process-clustering/" class="md-nav__link">
+      DP-GMM
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-simulating-a-gaussian-random-walk" class="md-nav__link">
+    Example: Simulating a Gaussian random walk
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ericmjl/dl-workshop/edit/master/docs/02-jax-idioms/04-random-numbers.ipynb" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var scriptElement = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://mybinder.org/v2/gh/ericmjl/dl-workshop/master?filepath=notebooks%2F02-jax-idioms%2F04-random-numbers.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="fully-controllable-random-number-generation">Fully Controllable Random Number Generation</h1>
+<p>In this section, we'll explore how to create programs that use random number generation in a fashion that is fully deterministic conditioned on a single starting random number generation key.</p>
+<p>But first, let's explore what happens when we use NumPy's vanilla random number generation protocol to generate numbers.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>  <span class="c1"># original numpy</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's draw a random number from a Gaussian in NumPy.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">onp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span>
+<span class="n">a</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>0.4967141530112327</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And for good measure, let's draw another one.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">b</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()</span>
+<span class="n">b</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>-0.13826430117118466</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is intuitive behaviour, because we expect that each time we call on a random number generator, we should get back a different number from before.</p>
+<p>However, this behaviour is problematic when we are trying to debug programs, which essentially are deterministic. This is because <em>stochastically</em>, we might hit a setting where we encounter an error in our program, and we are unable to reproduce it because we are relying on a random number generator that relies on global state, and hence that doesn't behave in a <em>fully</em> controllable fashion.</p>
+<p>How then can we get "the best of both worlds": random number generation that is controllable?</p>
+<p>The way that JAX's developers went about doing this is to use pseudo-random number generators that require explicit passing in of a pseudo-random number generation key, rather than relying on a global state being set. Each unique key will deterministically give a unique drawn value explicitly. Let's see that in action:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+<span class="n">a</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>DeviceArray(-0.18471184, dtype=float32)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To show you that passing in the same key gives us the same values as before:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+<span class="n">b</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>DeviceArray(-0.18471184, dtype=float32)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That should already be a stark difference from what you're used to with vanilla NumPy, and this is one key crucial difference between JAX's random module and NumPy's random module. Everything else is very similar, but this is a key difference, and for good reason -- this should hint to you the idea that we can have explicity reproducibility, rather than merely implicit, over our stochastic programs within the same session.</p>
+<p>How do we get a new draw? Well, we can either create a new key manually, or we can programmatically split the key into two, and use one of the newly split keys to generate a new random number. Let's see that in action:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">k2</span><span class="p">)</span>
+<span class="n">c</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>DeviceArray(1.3694694, dtype=float32)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">k3</span><span class="p">,</span> <span class="n">k4</span><span class="p">,</span> <span class="n">k5</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">k3</span><span class="p">)</span>
+<span class="n">d</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>DeviceArray(0.04692494, dtype=float32)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>By splitting the key into two, three, or even 1000 parts, we can get new keys that are derived from a parent key that generate different random numbers from the same random number generating function.</p>
+<p>Let's explore how we can use this in the generation of a Gaussian random walk.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="example-simulating-a-gaussian-random-walk">Example: Simulating a Gaussian random walk</h2>
+<p>A Gaussian random walk is one where we start at a point that is drawn from a Gaussian, and then we draw another point from a Gausian using the first point as the starting Gaussian point.</p>
+<p>Does that loop structure sound familiar? Well... yeah, it sounds like a classic <code>lax.scan</code> setup!</p>
+<p>Here's how we might set it up.</p>
+<p>Firstly, JAX's <code>random.normal</code> function doesn't allow us to specify the location and scale, and only gives us a draw from a unit Gaussian. We can work around this, because any unit Gaussian draw can be shifted and scaled to a <span><span class="MathJax_Preview">N(\mu, \sigma)</span><script type="math/tex">N(\mu, \sigma)</script></span> by multiplying the draw by <span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span> and adding <span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>. </p>
+<p>To get a length 1000 random draw, we can split the key 1000 ways, and use <code>lax.scan</code> to scan a new Gaussian generator across the keys, thereby giving us 1000 unique draws. We then add the old value of the Gaussian to the new draw.</p>
+<p>We return the tuple (<code>new_gaussian, old_gaussian</code>), as we want to have the new gaussian passed into the next iteration, and accumulate the history of the old gaussians.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.jax_idioms</span> <span class="kn">import</span> <span class="n">generate_new_gaussian</span>
+
+<span class="n">generate_new_gaussian</span><span class="err">??</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">final</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">generate_new_gaussian</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="n">result</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>DeviceArray([ 0.0000000e+00,  2.9308948e-01,  9.0737927e-01,
+             -1.8574587e+00, -9.3475866e-01,  5.3657484e-01,
+             -1.6153860e+00, -2.0659945e+00, -1.8341075e+00,
+             -1.4049507e-02, -1.8038048e+00, -1.4442403e+00,
+             -1.5271288e+00, -2.0419145e+00,  5.9077743e-02,
+             -1.3251271e+00, -2.7179704e+00, -2.5978544e+00,
+             -4.0130644e+00, -3.7746308e+00, -4.5405092e+00,
+             -5.8234315e+00, -6.2098603e+00, -5.1640716e+00,
+             -5.3078022e+00, -6.4008999e+00, -6.1982379e+00,
+             -6.6912217e+00, -6.9285545e+00, -6.7963529e+00,
+             -7.4145002e+00, -7.5791554e+00, -6.9574161e+00,
+             -6.8424754e+00, -7.0481572e+00, -8.4638453e+00,
+             -8.5200520e+00, -1.0150510e+01, -1.0404550e+01,
+             -1.0354767e+01, -1.1202571e+01, -9.8503466e+00,
+             -1.0906091e+01, -9.7488117e+00, -9.0915432e+00,
+             -7.0813093e+00, -8.7363491e+00, -6.5654454e+00,
+             -5.8719378e+00, -7.7279820e+00, -7.0762358e+00,
+             -6.9824843e+00, -6.2720618e+00, -6.5822825e+00,
+             -5.1869078e+00, -6.6846662e+00, -6.5237956e+00,
+             -5.5986729e+00, -5.2407198e+00, -5.4419765e+00,
+             -6.3954625e+00, -6.6313639e+00, -7.5193448e+00,
+             -1.0097613e+01, -1.0111365e+01, -9.4919729e+00,
+             -1.1689382e+01, -1.2609113e+01, -1.3132720e+01,
+             -1.2729928e+01, -1.3554560e+01, -1.4612862e+01,
+             -1.3765321e+01, -1.2790593e+01, -1.2499749e+01,
+             -1.0198821e+01, -9.9114904e+00, -8.6181431e+00,
+             -1.0463602e+01, -1.0668167e+01, -1.1387536e+01,
+             -1.0559889e+01, -1.1779433e+01, -8.8845911e+00,
+             -9.3539925e+00, -1.1195022e+01, -8.7970819e+00,
+             -6.6903763e+00, -6.7867746e+00, -7.0319462e+00,
+             -7.5244737e+00, -6.9895887e+00, -7.4406929e+00,
+             -5.9965134e+00, -5.0314608e+00, -4.4997315e+00,
+             -3.6206439e+00, -3.0368054e+00, -4.8258009e+00,
+             -5.9843774e+00, -6.1343188e+00, -6.9391813e+00,
+             -6.3957014e+00, -7.9022403e+00, -6.8429284e+00,
+             -6.3052950e+00, -5.7587605e+00, -5.0461640e+00,
+             -4.3869100e+00, -3.0319991e+00, -3.5835326e+00,
+             -3.4561212e+00, -2.7506545e+00, -3.9921327e+00,
+             -3.1952002e+00, -2.0107675e+00, -2.0431397e+00,
+             -1.2036926e+00, -2.5120826e+00,  1.5073891e-01,
+              5.9526514e-02, -6.1567672e-02, -1.7971006e-01,
+             -6.4089805e-02, -1.7376822e-01, -3.3485657e-01,
+             -1.5660967e+00, -3.2925894e+00, -3.2538462e+00,
+             -4.1834068e+00, -6.1261258e+00, -5.7395034e+00,
+             -6.7661810e+00, -7.1050177e+00, -5.4329929e+00,
+             -5.6401262e+00, -5.1202645e+00, -5.7162919e+00,
+             -5.2094598e+00, -6.0466599e+00, -4.9979591e+00,
+             -4.4890556e+00, -3.7108121e+00, -4.1257849e+00,
+             -4.3740158e+00, -3.0525262e+00, -3.6016676e+00,
+             -2.9378812e+00, -2.7627447e+00, -3.2016382e+00,
+             -5.1802568e+00, -4.7830458e+00, -6.3186502e+00,
+             -5.6700902e+00, -5.7391586e+00, -6.4026637e+00,
+             -8.0447359e+00, -8.9100914e+00, -7.9058552e+00,
+             -8.8494577e+00, -9.4514074e+00, -9.7416124e+00,
+             -1.1343502e+01, -1.0725481e+01, -1.1037007e+01,
+             -1.2457513e+01, -1.1892594e+01, -1.1273226e+01,
+             -1.1881676e+01, -1.2089799e+01, -1.2382518e+01,
+             -1.1811073e+01, -1.2355193e+01, -1.2284500e+01,
+             -1.2150561e+01, -1.3035995e+01, -1.1861339e+01,
+             -9.7929296e+00, -8.5769711e+00, -8.8338213e+00,
+             -8.9625845e+00, -9.3008270e+00, -8.2740698e+00,
+             -7.2355332e+00, -7.6913581e+00, -8.1070204e+00,
+             -7.8158293e+00, -6.7811961e+00, -7.8087449e+00,
+             -7.1342974e+00, -6.4980474e+00, -6.0770731e+00,
+             -7.3229432e+00, -8.4346581e+00, -7.7853637e+00,
+             -9.2040215e+00, -9.1392860e+00, -8.4487629e+00,
+             -7.6234417e+00, -7.6274519e+00, -8.6342812e+00,
+             -8.8896389e+00, -9.0145798e+00, -1.0174156e+01,
+             -1.0948184e+01, -1.1148661e+01, -1.1817743e+01,
+             -1.2380128e+01, -1.0779567e+01, -1.0633921e+01,
+             -1.0624221e+01, -1.1308586e+01, -1.0950401e+01,
+             -1.1113399e+01, -1.0885623e+01, -1.0229873e+01,
+             -9.5668888e+00, -8.4545860e+00, -6.5746989e+00,
+             -8.2771807e+00, -8.9303951e+00, -8.9252548e+00,
+             -9.0623932e+00, -1.1962385e+01, -9.9415340e+00,
+             -1.0192524e+01, -8.0894470e+00, -7.0265064e+00,
+             -6.7623253e+00, -6.9903803e+00, -7.1455112e+00,
+             -7.8920078e+00, -7.7239509e+00, -7.3774877e+00,
+             -6.4395394e+00, -7.0436544e+00, -8.7256002e+00,
+             -7.1755939e+00, -5.7905116e+00, -4.3698101e+00,
+             -5.1510201e+00, -4.8481994e+00, -6.6298528e+00,
+             -6.7535200e+00, -6.8409166e+00, -6.5135756e+00,
+             -5.4256835e+00, -4.0130773e+00, -3.5815592e+00,
+             -2.3260942e+00, -2.6673090e+00, -3.8151481e+00,
+             -4.9169331e+00, -5.2914739e+00, -6.0849295e+00,
+             -6.6498380e+00, -6.8321829e+00, -6.6892276e+00,
+             -4.2620564e+00, -3.6063349e+00, -3.6935492e+00,
+             -3.2239606e+00, -1.9226974e+00, -2.8547025e+00,
+             -3.1886687e+00, -3.4799323e+00, -2.7632964e+00,
+             -3.8803239e+00, -5.2894616e+00, -3.7164781e+00,
+             -2.1130731e+00, -2.7807741e+00, -3.8356600e+00,
+             -4.4654922e+00, -6.1223135e+00, -6.2291455e+00,
+             -5.2452497e+00, -3.8544254e+00, -4.0835938e+00,
+             -4.7132416e+00, -4.7189741e+00, -3.3033028e+00,
+             -2.0330689e+00, -1.9273376e+00, -2.0315263e+00,
+             -2.7490623e+00, -2.5552733e+00, -2.6076877e+00,
+             -2.4953003e+00, -1.6205913e+00, -5.6036735e-01,
+              1.3941172e+00,  1.9810356e+00,  3.4585705e+00,
+              4.6223598e+00,  5.6333132e+00,  5.6642418e+00,
+              5.4901705e+00,  6.0357161e+00,  5.4238672e+00,
+              4.9301081e+00,  5.6282086e+00,  6.5141969e+00,
+              6.3569307e+00,  7.2397623e+00,  8.4335928e+00,
+              1.0527872e+01,  1.0277812e+01,  1.1162391e+01,
+              9.9877901e+00,  1.1897879e+01,  1.1802931e+01,
+              1.3891153e+01,  1.2607279e+01,  1.3688196e+01,
+              1.4280282e+01,  1.4194159e+01,  1.5063095e+01,
+              1.5630124e+01,  1.6656620e+01,  1.8520769e+01,
+              1.7245922e+01,  1.7332148e+01,  1.8136528e+01,
+              1.7593718e+01,  1.7247683e+01,  1.6601835e+01,
+              1.8719860e+01,  1.8267977e+01,  1.9116158e+01,
+              2.0761889e+01,  2.0569153e+01,  2.3161409e+01,
+              2.2082083e+01,  2.2013521e+01,  2.2380838e+01,
+              2.1141018e+01,  2.0381895e+01,  2.0923218e+01,
+              2.1501842e+01,  2.1908739e+01,  2.2140768e+01,
+              2.1900915e+01,  2.0821558e+01,  1.9753613e+01,
+              2.0594179e+01,  2.1206045e+01,  2.3502974e+01,
+              2.3857637e+01,  2.5092167e+01,  2.5346411e+01,
+              2.5012743e+01,  2.5705475e+01,  2.4005598e+01,
+              2.3668116e+01,  2.3274820e+01,  2.3368999e+01,
+              2.2466444e+01,  2.3110544e+01,  2.3757801e+01,
+              2.3500526e+01,  2.2233465e+01,  2.1470026e+01,
+              2.1215025e+01,  2.0534557e+01,  2.0794485e+01,
+              2.1000740e+01,  1.9642010e+01,  1.9264942e+01,
+              1.9692028e+01,  2.0378180e+01,  2.1518808e+01,
+              2.0830177e+01,  2.0563187e+01,  2.0399698e+01,
+              2.1520786e+01,  2.2611856e+01,  2.3350994e+01,
+              2.3495277e+01,  2.3201815e+01,  2.2468166e+01,
+              2.2388708e+01,  2.3538897e+01,  2.2670794e+01,
+              2.3710402e+01,  2.4161610e+01,  2.2987537e+01,
+              2.2397484e+01,  2.2795181e+01,  2.2931574e+01,
+              2.4216108e+01,  2.4123053e+01,  2.5571371e+01,
+              2.6668819e+01,  2.7405973e+01,  2.7994703e+01,
+              2.8459429e+01,  2.7073235e+01,  2.7061722e+01,
+              2.8760845e+01,  2.8883043e+01,  2.8625389e+01,
+              2.9911112e+01,  3.0024462e+01,  2.9932728e+01,
+              3.0289661e+01,  3.1156015e+01,  3.1827835e+01,
+              3.1586716e+01,  3.3310631e+01,  3.4046471e+01,
+              3.4243004e+01,  3.4956837e+01,  3.5139080e+01,
+              3.6184502e+01,  3.5955849e+01,  3.7509201e+01,
+              3.7216148e+01,  3.6132656e+01,  3.6760956e+01,
+              3.5242069e+01,  3.5308361e+01,  3.6642490e+01,
+              3.6514305e+01,  3.6897408e+01,  3.5683262e+01,
+              3.4114861e+01,  3.3112411e+01,  3.3603756e+01,
+              3.2959377e+01,  3.3436260e+01,  3.4570690e+01,
+              3.5626965e+01,  3.4386700e+01,  3.7291370e+01,
+              3.7587612e+01,  3.8173309e+01,  3.7969139e+01,
+              3.7319889e+01,  3.7574493e+01,  3.7078999e+01,
+              3.7892895e+01,  3.8195210e+01,  3.9049164e+01,
+              4.0805832e+01,  4.1425289e+01,  4.1006306e+01,
+              4.2599464e+01,  4.2570702e+01,  4.1265091e+01,
+              3.9659935e+01,  3.6838615e+01,  3.7152439e+01,
+              3.4707485e+01,  3.4948238e+01,  3.5298897e+01,
+              3.5688854e+01,  3.5597324e+01,  3.6016472e+01,
+              3.4955692e+01,  3.5937595e+01,  3.6321556e+01,
+              3.6158390e+01,  3.5102604e+01,  3.5943344e+01,
+              3.5029987e+01,  3.5126171e+01,  3.5180359e+01,
+              3.3256603e+01,  3.1358570e+01,  3.1270344e+01,
+              3.2284927e+01,  3.1823986e+01,  3.1956850e+01,
+              3.1575148e+01,  3.1685295e+01,  2.9895905e+01,
+              2.9540310e+01,  3.0184551e+01,  3.0167349e+01,
+              3.2061939e+01,  3.0725494e+01,  3.0744898e+01,
+              3.0956152e+01,  3.0580080e+01,  3.1252678e+01,
+              3.0915356e+01,  3.0126585e+01,  3.0106441e+01,
+              2.9090900e+01,  3.0437056e+01,  3.0409433e+01,
+              2.9945259e+01,  3.0450762e+01,  3.2142242e+01,
+              3.1455513e+01,  3.0856722e+01,  3.0757288e+01,
+              3.1934263e+01,  3.0583834e+01,  3.1049152e+01,
+              3.1009058e+01,  3.0781527e+01,  3.0927502e+01,
+              3.1616207e+01,  3.2949509e+01,  3.3827129e+01,
+              3.4099651e+01,  3.3860271e+01,  3.2565521e+01,
+              3.2352459e+01,  3.1877657e+01,  3.1700710e+01,
+              3.1149137e+01,  3.3191036e+01,  3.3546593e+01,
+              3.4550777e+01,  3.6293682e+01,  3.6673988e+01,
+              3.6357235e+01,  3.5923759e+01,  3.6504375e+01,
+              3.7487831e+01,  3.7691296e+01,  3.8078178e+01,
+              3.8593243e+01,  3.9208504e+01,  3.9726727e+01,
+              3.8830025e+01,  3.8074921e+01,  3.8185421e+01,
+              3.9926697e+01,  3.8049431e+01,  3.7234890e+01,
+              3.6851467e+01,  3.4246452e+01,  3.3483982e+01,
+              3.3542747e+01,  3.3847820e+01,  3.5174644e+01,
+              3.5427490e+01,  3.4421764e+01,  3.4347435e+01,
+              3.4626266e+01,  3.4442036e+01,  3.4479492e+01,
+              3.4569195e+01,  3.5695679e+01,  3.5770096e+01,
+              3.3925434e+01,  3.3344734e+01,  3.4328148e+01,
+              3.3246941e+01,  3.6386784e+01,  3.5068905e+01,
+              3.6650124e+01,  3.8195084e+01,  3.8098965e+01,
+              3.8483913e+01,  3.8413033e+01,  3.8648891e+01,
+              3.8181110e+01,  3.9143925e+01,  3.7722179e+01,
+              3.6982872e+01,  3.6395641e+01,  3.5374462e+01,
+              3.5677132e+01,  3.6783710e+01,  3.7833107e+01,
+              3.6720718e+01,  3.8577248e+01,  3.8477531e+01,
+              3.8318790e+01,  3.8823742e+01,  3.8284389e+01,
+              3.9372498e+01,  3.9304340e+01,  3.9745270e+01,
+              4.0708485e+01,  4.2130310e+01,  4.2701813e+01,
+              4.2850170e+01,  4.4041939e+01,  4.4493820e+01,
+              4.4333946e+01,  4.4279903e+01,  4.4928108e+01,
+              4.6226978e+01,  4.7380543e+01,  4.4302620e+01,
+              4.4585323e+01,  4.4197090e+01,  4.4005562e+01,
+              4.5030525e+01,  4.6177292e+01,  4.5057133e+01,
+              4.4796387e+01,  4.5758343e+01,  4.6264778e+01,
+              4.5833244e+01,  4.5269356e+01,  4.4239578e+01,
+              4.4179420e+01,  4.3310829e+01,  4.2324654e+01,
+              4.2570541e+01,  4.2294926e+01,  4.2662281e+01,
+              4.1898159e+01,  4.3488464e+01,  4.2308685e+01,
+              4.0471664e+01,  4.1282433e+01,  4.1386139e+01,
+              4.1974152e+01,  4.2820770e+01,  4.3028973e+01,
+              4.2441658e+01,  4.1195194e+01,  4.2222683e+01,
+              4.2629620e+01,  4.2836639e+01,  4.0610840e+01,
+              4.0618824e+01,  4.0622406e+01,  4.2302402e+01,
+              4.1653931e+01,  4.1998516e+01,  4.2532280e+01,
+              4.3407074e+01,  4.4703434e+01,  4.5959232e+01,
+              4.4900124e+01,  4.3607147e+01,  4.4185852e+01,
+              4.3930374e+01,  4.2671288e+01,  4.2647823e+01,
+              4.3074402e+01,  4.0779964e+01,  3.9422771e+01,
+              3.9817394e+01,  4.0903217e+01,  4.0945713e+01,
+              4.0179401e+01,  3.9954971e+01,  3.8774868e+01,
+              3.9389870e+01,  3.8990650e+01,  4.0301315e+01,
+              4.0336689e+01,  3.9112911e+01,  3.8991299e+01,
+              3.9274616e+01,  3.8024837e+01,  3.8186394e+01,
+              3.6334290e+01,  3.5846634e+01,  3.4716499e+01,
+              3.5293205e+01,  3.6128590e+01,  3.5766850e+01,
+              3.5954765e+01,  3.6176323e+01,  3.5974739e+01,
+              3.5190342e+01,  3.3506847e+01,  3.2950245e+01,
+              3.5488556e+01,  3.5793999e+01,  3.5961895e+01,
+              3.5924114e+01,  3.6066338e+01,  3.5062145e+01,
+              3.4197170e+01,  3.5094486e+01,  3.4696815e+01,
+              3.5347645e+01,  3.5017605e+01,  3.5452106e+01,
+              3.4469566e+01,  3.3246662e+01,  3.2555874e+01,
+              3.1336807e+01,  3.0030834e+01,  2.9280752e+01,
+              3.0166458e+01,  3.0552605e+01,  3.2284317e+01,
+              3.1299629e+01,  3.1654791e+01,  3.2651154e+01,
+              3.1412001e+01,  3.1104824e+01,  2.9514833e+01,
+              2.8710270e+01,  2.7595047e+01,  2.8285002e+01,
+              2.7775763e+01,  2.7963326e+01,  2.6885824e+01,
+              2.5964947e+01,  2.8124084e+01,  3.0352627e+01,
+              3.1669094e+01,  2.9583199e+01,  2.9716843e+01,
+              2.9729292e+01,  3.1786596e+01,  3.1789055e+01,
+              3.2763531e+01,  3.3053158e+01,  3.1871616e+01,
+              3.2073021e+01,  3.0871887e+01,  2.9844360e+01,
+              3.0924242e+01,  3.1848522e+01,  3.3157806e+01,
+              3.0890354e+01,  3.1631508e+01,  3.0394520e+01,
+              3.0855812e+01,  2.8997591e+01,  3.0913607e+01,
+              3.1538607e+01,  3.2221794e+01,  3.1800053e+01,
+              3.2862667e+01,  3.3099739e+01,  3.3546024e+01,
+              3.2815430e+01,  3.2776962e+01,  3.2717190e+01,
+              3.4095726e+01,  3.4460094e+01,  3.4477234e+01,
+              3.2751495e+01,  3.1662571e+01,  3.2135162e+01,
+              3.1407804e+01,  3.0974413e+01,  3.1359869e+01,
+              2.9897268e+01,  2.8611977e+01,  2.7841516e+01,
+              2.8652159e+01,  2.7959852e+01,  2.7184647e+01,
+              2.5211527e+01,  2.3363140e+01,  2.4084505e+01,
+              2.2724066e+01,  2.2931398e+01,  2.2261568e+01,
+              2.1220295e+01,  2.2457872e+01,  2.3890150e+01,
+              2.3751272e+01,  2.3846703e+01,  2.2932783e+01,
+              2.3326431e+01,  2.3571524e+01,  2.4509272e+01,
+              2.2720484e+01,  2.1190624e+01,  2.2890141e+01,
+              2.2580996e+01,  2.1119761e+01,  2.1426302e+01,
+              2.1359793e+01,  2.0951298e+01,  2.0533409e+01,
+              1.9864664e+01,  1.9137741e+01,  2.0104788e+01,
+              2.0991695e+01,  2.0703228e+01,  2.0457403e+01,
+              2.0432844e+01,  1.9983459e+01,  2.0347317e+01,
+              2.1548651e+01,  2.1746424e+01,  2.3398228e+01,
+              2.4359446e+01,  2.3417252e+01,  2.4232868e+01,
+              2.5758299e+01,  2.6161476e+01,  2.5474260e+01,
+              2.6110472e+01,  2.5719536e+01,  2.6882660e+01,
+              2.6393394e+01,  2.5338243e+01,  2.5338694e+01,
+              2.4715746e+01,  2.5425732e+01,  2.5330101e+01,
+              2.4126286e+01,  2.4346094e+01,  2.5075274e+01,
+              2.6083353e+01,  2.5672998e+01,  2.6789873e+01,
+              2.7441189e+01,  2.7152185e+01,  2.8773258e+01,
+              2.8286983e+01,  2.7623968e+01,  2.7085136e+01,
+              2.7892982e+01,  2.8239511e+01,  3.0850424e+01,
+              3.0474251e+01,  2.9058525e+01,  2.9551945e+01,
+              3.1022072e+01,  3.2846928e+01,  3.2378555e+01,
+              3.1974035e+01,  3.1732973e+01,  3.2823322e+01,
+              3.1534229e+01,  3.2405807e+01,  3.1176874e+01,
+              3.1158363e+01,  2.9453104e+01,  2.9252224e+01,
+              2.9300753e+01,  2.8109919e+01,  2.7284943e+01,
+              2.6386570e+01,  2.6772263e+01,  2.6448494e+01,
+              2.7085169e+01,  2.7579880e+01,  2.8534266e+01,
+              2.6776207e+01,  2.6352282e+01,  2.7356855e+01,
+              2.5677477e+01,  2.7271610e+01,  2.5735304e+01,
+              2.4935097e+01,  2.4828808e+01,  2.3865839e+01,
+              2.5935564e+01,  2.5382603e+01,  2.6312302e+01,
+              2.6516724e+01,  2.7956665e+01,  2.8309921e+01,
+              2.8551727e+01,  2.8265148e+01,  2.8631514e+01,
+              2.8650980e+01,  2.9362616e+01,  2.9412687e+01,
+              3.0437040e+01,  2.9622648e+01,  2.9777632e+01,
+              2.8744820e+01,  2.7734375e+01,  2.6796537e+01,
+              2.6956509e+01,  2.8200478e+01,  2.8237026e+01,
+              3.0127491e+01,  3.1191160e+01,  2.9725546e+01,
+              2.8540089e+01,  2.8666386e+01,  2.7104782e+01,
+              2.9712494e+01,  3.0739010e+01,  3.2321617e+01,
+              3.2645321e+01,  3.1430027e+01,  3.1431028e+01,
+              3.3137547e+01,  3.2631096e+01,  3.2854687e+01,
+              3.2398182e+01,  3.3396172e+01,  3.2681847e+01,
+              3.4913078e+01,  3.6094872e+01,  3.6287483e+01,
+              3.6486488e+01,  3.6492893e+01,  3.7116772e+01,
+              3.8242214e+01,  4.0165955e+01,  3.7979900e+01,
+              3.9059998e+01,  3.9028103e+01,  4.0075943e+01,
+              3.8624214e+01,  3.8290436e+01,  3.7825928e+01,
+              3.6552616e+01,  3.7390743e+01,  3.9012035e+01,
+              3.9298553e+01,  3.9827915e+01,  4.1841003e+01,
+              4.0262543e+01,  4.0187325e+01,  4.0574299e+01,
+              4.1681656e+01,  4.2406036e+01,  4.4020794e+01,
+              4.5037449e+01,  4.3865047e+01,  4.2779461e+01,
+              4.1440739e+01,  4.1341339e+01,  3.9818481e+01,
+              4.0123234e+01,  3.9883667e+01,  4.0748554e+01,
+              4.2278969e+01,  4.2600727e+01,  4.2560783e+01,
+              4.3364643e+01,  4.3650795e+01,  4.2917637e+01,
+              4.2937355e+01,  4.2296829e+01,  4.2014278e+01,
+              4.2042435e+01,  4.3259327e+01,  4.3390633e+01,
+              4.4372753e+01,  4.4892471e+01,  4.5385017e+01,
+              4.7565838e+01,  4.7109280e+01,  4.6290051e+01,
+              4.5906693e+01,  4.4330467e+01,  4.4608757e+01,
+              4.3309235e+01,  4.2039761e+01,  4.3436153e+01,
+              4.3031368e+01,  4.3179710e+01,  4.1960804e+01,
+              4.2161831e+01,  4.2877914e+01,  4.2087650e+01,
+              4.2310814e+01,  4.3533005e+01,  4.4523136e+01,
+              4.4735619e+01,  4.4101280e+01,  4.4951130e+01,
+              4.5912594e+01,  4.7106377e+01,  4.6318672e+01,
+              4.5454987e+01,  4.4767693e+01,  4.4964012e+01,
+              4.4671551e+01,  4.5825607e+01,  4.6738506e+01,
+              4.4972668e+01,  4.4546360e+01,  4.3239277e+01,
+              4.4169300e+01,  4.4169174e+01,  4.3997723e+01,
+              4.3268627e+01,  4.1956364e+01,  4.1147232e+01,
+              4.1304501e+01,  4.1476833e+01,  4.1862213e+01,
+              4.2731663e+01,  4.3843063e+01,  4.5468189e+01,
+              4.6342617e+01,  4.7410614e+01,  4.7741390e+01,
+              4.7063366e+01,  4.7882603e+01,  4.8219383e+01,
+              4.9347443e+01,  4.6957180e+01,  4.7834709e+01,
+              4.7918716e+01,  4.7106808e+01,  4.6122921e+01,
+              4.5530235e+01,  4.5815086e+01,  4.5350376e+01,
+              4.5075825e+01], dtype=float32)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>[&lt;matplotlib.lines.Line2D at 0x7fcb18564510&gt;]</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_18_1.png"
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looks like we did it! Definitely looks like a proper Gaussian random walk to me. Let's encapsulate this inside a funciton generator, because the next thing we're going to do is to generate multiple realizations of the Gaussian random walk.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.jax_idioms</span> <span class="kn">import</span> <span class="n">make_gaussian_random_walk_func</span>
+
+<span class="n">make_gaussian_random_walk_func</span><span class="err">??</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, what if we wanted to generate multiple realizations of the Gaussian random walk? Does this sound familiar? If so... yeah, it's a vanilla for-loop, which directly brings us to <code>vmap</code>!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span>
+<span class="n">num_realizations</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_realizations</span><span class="p">)</span>
+<span class="n">grw_1000_steps</span> <span class="o">=</span> <span class="n">make_gaussian_random_walk_func</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">final</span><span class="p">,</span> <span class="n">trajectories</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">grw_1000_steps</span><span class="p">)(</span><span class="n">keys</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>(200, 1000)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We did it! We have 200 trajectories of a 1000-step Gaussian random walk. Notice also how the program is structured very nicely: Each layer of abstraction in the program corresponds to a new axis dimension along which we are working. The onion layering of the program has very <em>natural</em> structure for the problem at hand.</p>
+<p>Enough prosyletizing from me, let's visualize the Gaussian random walk to make sure it genuinely is a GRW.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">trajectory</span> <span class="ow">in</span> <span class="n">trajectories</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">20</span><span class="p">]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_25_0.png"
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, note how if you were to re-run the entire program from top-to-bottom again, you would get <em>exactly the same plot</em>. This is what we mean by "reproducible". Traditional array programs are not fully reproducible, they are only "kind of" reproducible in the limit of many runs of the same program. With JAX's random number generation paradigm, any random number generation program is 100% reproducible, down to the level of the exact sequence of random number draws, as long as the seed(s) controlling the program are 100% identical. When an error shows up in a program, as long as its stochastic components are controlled by hand-set seeds, that error is 100% reproducible. For those who have tried working with stochastic programs before, this is an extremely desirable property, as it means we gain the ability to reliably debug our program -- absolutely crucial especially when it comes to working with probabilistic models.</p>
+<p>Also notice how we finally wrote our first productive for-loop -- but it was only to plot something, not for some form of calculations :).</p>
+</div>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../03-lax-scan/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Scanning
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../05-composition-example/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Compositionality
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="http://www.shortwhale.com/ericmjl" target="_blank" rel="noopener" title="www.shortwhale.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/ericmjl" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/ericmjl" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/ericmjl" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: ['tabs'],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+        <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

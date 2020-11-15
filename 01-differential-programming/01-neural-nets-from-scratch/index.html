@@ -1,0 +1,1289 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.5">
+    
+    
+      
+        <title>Neural Networks from Scratch - Differential Progamming Tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.21aed14c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.196e0c26.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/mermaid@7.1.2/dist/mermaid.css">
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="green">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#neural-networks-from-scratch" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-header-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Differential Progamming Tutorial
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Neural Networks from Scratch
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Differential Progamming Tutorial" class="md-nav__button md-logo" aria-label="Differential Progamming Tutorial">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Differential Progamming Tutorial
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ericmjl/dl-workshop/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ericmjl/dl-workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+    <label class="md-nav__link" for="nav-2">
+      Preliminaries
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Preliminaries" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Preliminaries
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/01-preface/" class="md-nav__link">
+      Preface
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/02-prerequisites/" class="md-nav__link">
+      Prerequisites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../00-preliminaries/03-setup/" class="md-nav__link">
+      Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    <label class="md-nav__link" for="nav-3">
+      Introduction to Differential Programming
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Introduction to Differential Programming" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Introduction to Differential Programming
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Neural Networks from Scratch
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Neural Networks from Scratch
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linear-regression" class="md-nav__link">
+    Linear Regression
+  </a>
+  
+    <nav class="md-nav" aria-label="Linear Regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#equation-form" class="md-nav__link">
+    Equation Form
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-simulated-data" class="md-nav__link">
+    Make Simulated Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-simulate-data" class="md-nav__link">
+    Exercise: Simulate Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-take-bad-guesses" class="md-nav__link">
+    Exercise: Take bad guesses
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regression-loss-function" class="md-nav__link">
+    Regression Loss Function
+  </a>
+  
+    <nav class="md-nav" aria-label="Regression Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-mean-squared-error" class="md-nav__link">
+    Exercise: Mean Squared Error
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-optimize-model-by-hand" class="md-nav__link">
+    Activity: Optimize model by hand.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loss-minimization" class="md-nav__link">
+    Loss Minimization
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-gradient-optimization/" class="md-nav__link">
+      Gradient Based Optimization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-linear-model-optimization/" class="md-nav__link">
+      Linear Model
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-logistic-regression/" class="md-nav__link">
+      Logistic Regression
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-neural-networks/" class="md-nav__link">
+      Neural Networks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    <label class="md-nav__link" for="nav-4">
+      JAX Programming Idioms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="JAX Programming Idioms" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        JAX Programming Idioms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/00-introduction/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/01-vmap/" class="md-nav__link">
+      Mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/02-partials/" class="md-nav__link">
+      Partials and closures
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/03-lax-scan/" class="md-nav__link">
+      Scanning
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/04-random-numbers/" class="md-nav__link">
+      Random Numbers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02-jax-idioms/05-composition-example/" class="md-nav__link">
+      Compositionality
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" >
+    <label class="md-nav__link" for="nav-5">
+      The stax Module
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="The stax Module" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        The stax Module
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/01-linear/" class="md-nav__link">
+      Linear Models with stax
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03-stax/02-neural/" class="md-nav__link">
+      Neural Networks with stax
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" >
+    <label class="md-nav__link" for="nav-6">
+      Gaussian Clustering
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Gaussian Clustering" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Gaussian Clustering
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/01-intro-gaussian-clustering/" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/02-dirichlet-processes/" class="md-nav__link">
+      Dirichlet Processes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04-gaussian-clustering/03-dirichlet-process-clustering/" class="md-nav__link">
+      DP-GMM
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linear-regression" class="md-nav__link">
+    Linear Regression
+  </a>
+  
+    <nav class="md-nav" aria-label="Linear Regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#equation-form" class="md-nav__link">
+    Equation Form
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-simulated-data" class="md-nav__link">
+    Make Simulated Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-simulate-data" class="md-nav__link">
+    Exercise: Simulate Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-take-bad-guesses" class="md-nav__link">
+    Exercise: Take bad guesses
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regression-loss-function" class="md-nav__link">
+    Regression Loss Function
+  </a>
+  
+    <nav class="md-nav" aria-label="Regression Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-mean-squared-error" class="md-nav__link">
+    Exercise: Mean Squared Error
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-optimize-model-by-hand" class="md-nav__link">
+    Activity: Optimize model by hand.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loss-minimization" class="md-nav__link">
+    Loss Minimization
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ericmjl/dl-workshop/edit/master/docs/01-differential-programming/01-neural-nets-from-scratch.ipynb" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var scriptElement = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://mybinder.org/v2/gh/ericmjl/dl-workshop/master?filepath=notebooks%2F01-differential-programming%2F01-neural-nets-from-scratch.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="o">.</span><span class="n">figure_format</span> <span class="o">=</span> <span class="s1">&#39;retina&#39;</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="neural-networks-from-scratch">Neural Networks from Scratch</h1>
+<p>In this chapter, we are going to explore differential computing
+in the place where it was most highly leveraged: the training of neural networks.
+Now, as with all topics, to learn something most clearly,
+it pays to have an <em>anchoring example</em> that we start with.</p>
+<p>In this section, we'll lean heavily on linear regression as that <em>anchoring example</em>.
+We'll also explore what gradient-based optimization is,
+see an elementary example of that in action,
+and then connect those ideas back to optimization of a linear model.
+Once we're done there,
+then we'll see the exact same ideas in action with a logistic regression model,
+before finally seeing them in action again with a neural network model.</p>
+<p>The big takeaway from this chapter is that basically all supervised learning tasks can be broken into:</p>
+<ul>
+<li>model</li>
+<li>loss</li>
+<li>optimizer</li>
+</ul>
+<p>Hope you enjoy it! If you're ready, let's take a look at linear regression.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">npr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">FloatSlider</span>
+<span class="kn">from</span> <span class="nn">pyprojroot</span> <span class="kn">import</span> <span class="n">here</span>
+</code></pre></div>
+
+
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="linear-regression">Linear Regression</h2>
+<p>Linear regression is foundational to deep learning.
+It should be a model that everybody has been exposed to before in school.</p>
+<p>A humorous take I have heard about linear models is that
+if you zoom in enough into whatever system of the world you're modelling,
+<em>anything</em> can basically look linear.</p>
+<p>One of the advantages of linear models is its simplicity.
+It basically has two parameters, one explaining a "baseline" (intercept)
+and the other explaining strength of relationships (slope).</p>
+<p>Yet one of the disadvantages of linear models is also its simplicity.
+A linear model has a strong presumption of linearity.</p>
+<p>NOTE TO SELF: I need to rewrite this introduction. It is weak.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="equation-form">Equation Form</h3>
+<p>Linear regression, as a model, is expressed as follows:</p>
+<div>
+<div class="MathJax_Preview">y = wx + b</div>
+<script type="math/tex; mode=display">y = wx + b</script>
+</div>
+<p>Here:</p>
+<ul>
+<li>The <strong>model</strong> is the equation, <span><span class="MathJax_Preview">y = wx + b</span><script type="math/tex">y = wx + b</script></span>.</li>
+<li><span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> is the output data.</li>
+<li><span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> is our input data.</li>
+<li><span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> is a slope parameter.</li>
+<li><span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> is our intercept parameter.</li>
+<li>Implicit in the model is the fact that we have transformed <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> by another function, the "identity" function, <span><span class="MathJax_Preview">f(x) = x</span><script type="math/tex">f(x) = x</script></span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this model, <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> and <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> are, in a sense, "fixed",
+because this is the data that we have obtained.
+On the other hand, <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> are the parameters of interest,
+and <em>we are interested in </em><em>learning</em><em> the parameter values for <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>
+that let our model best explain the data</em>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="make-simulated-data">Make Simulated Data</h3>
+<p>To explore this idea in a bit more depth as applied to a linear regression model,
+let us start by making some simulated data with a bit of injected noise.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-simulate-data">Exercise: Simulate Data</h3>
+<p>Fill in <code>w_true</code> and <code>b_true</code> with values that you like, or else leave them alone and follow along.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">x</span><span class="p">,</span> <span class="n">w_true</span><span class="p">,</span> <span class="n">b_true</span><span class="p">,</span> <span class="n">noise</span>
+
+<span class="c1"># exercise: specify ground truth w as w_true.</span>
+<span class="c1"># w_true = ...</span>
+
+<span class="c1"># exercise: specify ground truth b as b_true</span>
+<span class="c1"># b_true = ...</span>
+
+
+<span class="c1"># exercise: write a function to return the linear equation</span>
+<span class="k">def</span> <span class="nf">make_y</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Your answer here.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Comment out my answer below so it doesn&#39;t clobber over yours.</span>
+<span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">make_y</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">make_y</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w_true</span><span class="p">,</span> <span class="n">b_true</span><span class="p">)</span>
+
+<span class="c1"># Plot ground truth data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>/home/travis/build/ericmjl/dl-workshop/src/dl_workshop/answers.py:34: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>Text(0, 0.5, &#39;y&#39;)</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_9_2.png"
+width=382
+height=261
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-take-bad-guesses">Exercise: Take bad guesses</h3>
+<p>Now, let's plot what would be a very bad estimate of <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>.
+Replace the values assigned to <code>w</code> and <code>b</code> with something of your preference,
+or feel free to leave them alone and go on.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Plot a very bad estimate</span>
+<span class="n">w</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span>  <span class="c1"># exercise: fill in a bad value for w</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># exercise: fill in a bad value for b</span>
+<span class="n">y_est</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># exercise: fill in the equation.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_est</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bad model&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>&lt;matplotlib.legend.Legend at 0x7f1e181d6cd0&gt;</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_png output_subarea ">
+<img src="output_11_1.png"
+width=390
+height=261
+>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="regression-loss-function">Regression Loss Function</h2>
+<p>How bad is our model?
+We can quantify this by looking at a metric called the "mean squared error".
+The mean squared error is defined as "the average of the sum of squared errors".</p>
+<p>"Mean squared error" is but one of many <strong>loss functions</strong>
+that are available in deep learning frameworks.
+It is commonly used for regression tasks.</p>
+<p>Loss functions are designed to quantify how bad our model is in predicting the data.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="exercise-mean-squared-error">Exercise: Mean Squared Error</h3>
+<p>Implement the mean squred error function in NumPy code.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">mse</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Implement the function here&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dl_workshop.answers</span> <span class="kn">import</span> <span class="n">mse</span>
+
+<span class="c1"># Calculate the mean squared error between </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mse</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_est</span><span class="p">))</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>713.3526
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="activity-optimize-model-by-hand">Activity: Optimize model by hand.</h3>
+<p>Now, we're going to optimize this model by hand.
+If you're viewing this on the website, I'd encourage you to launch a binder session to play around!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">FloatSlider</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">plot_model</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">y_est</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_est</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE: </span><span class="si">{</span><span class="n">mse</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_est</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div id="d18de1a2-5008-41d7-804d-54ff0e3313e0"></div>
+<div class="output_subarea output_widget_view ">
+<script type="text/javascript">
+var element = $('#d18de1a2-5008-41d7-804d-54ff0e3313e0');
+</script>
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "2be5c8ae157143109a914a0ea64562cb"}
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="loss-minimization">Loss Minimization</h2>
+<p>As you were optimizing the model, notice what happens to the mean squared error score: it goes down!</p>
+<p>Implicit in what you were doing is gradient-based optimization.
+As a "human" doing the optimization,
+you were aware that you needed to move the sliders for <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> and <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> 
+in particular directions in order to get a best-fit model.
+The thing we'd like to learn how to do now
+is <em>to get a computer to automatically perform this procedure</em>.
+Let's see how to make that happen.</p>
+</div>
+</div>
+</div>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"42189a1123a14b0388acb219cc0195ee": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "75292878be2642888c1c07304604424d": {"model_name": "SliderStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "382e8c734b3848e88929198e3b580500": {"model_name": "FloatSliderModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "FloatSliderView", "continuous_update": true, "description": "w", "description_tooltip": null, "disabled": false, "layout": "IPY_MODEL_42189a1123a14b0388acb219cc0195ee", "max": 10.0, "min": -10.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_75292878be2642888c1c07304604424d", "value": 0.0}}, "ddd314fd716e43bc81544208866c6f7d": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "0ca6277947a946e19d8dcfda4e04f094": {"model_name": "SliderStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "20089987abc24464853b91d842345a54": {"model_name": "FloatSliderModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "FloatSliderView", "continuous_update": true, "description": "b", "description_tooltip": null, "disabled": false, "layout": "IPY_MODEL_ddd314fd716e43bc81544208866c6f7d", "max": 30.0, "min": -10.0, "orientation": "horizontal", "readout": true, "readout_format": ".2f", "step": 0.1, "style": "IPY_MODEL_0ca6277947a946e19d8dcfda4e04f094", "value": 0.0}}, "dd2f4edf9f0040959fcc323f0f97b1bd": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2be5c8ae157143109a914a0ea64562cb": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_382e8c734b3848e88929198e3b580500", "IPY_MODEL_20089987abc24464853b91d842345a54", "IPY_MODEL_5116f88287e1414aa2a2d83693096c49"], "layout": "IPY_MODEL_dd2f4edf9f0040959fcc323f0f97b1bd"}}, "60520a5f2d084fb7a4c946eb10a63e4b": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "5116f88287e1414aa2a2d83693096c49": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_60520a5f2d084fb7a4c946eb10a63e4b", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {"image/png": {"width": 368, "height": 263}, "needs_background": "light"}, "data": {"text/plain": "<Figure size 432x288 with 1 Axes>", "image/png": "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\n"}}]}}}, "version_major": 2, "version_minor": 0}
+</script>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../00-preliminaries/03-setup/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Setup
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../02-gradient-optimization/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Gradient Based Optimization
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="http://www.shortwhale.com/ericmjl" target="_blank" rel="noopener" title="www.shortwhale.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 8l-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/ericmjl" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/ericmjl" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/ericmjl" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: ['tabs'],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+        <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
